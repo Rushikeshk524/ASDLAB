@@ -20,7 +20,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 
 
-df = pd.read_csv('exp9.csv')
+df = pd.read_csv('exp9.csv', skipinitialspace=True)
 
 X = df[['Experience', 'Salary', 'Satisfaction']]
 y = df['Attrition']
@@ -43,7 +43,11 @@ for depth in [2, 3]:
 
         mlflow.log_param("max_depth", depth)
         mlflow.log_metric("accuracy", accuracy)
-        mlflow.sklearn.log_model(model, "model")
+        mlflow.sklearn.log_model(
+            model,
+            name="model",
+            skops_trusted_types=["sklearn.tree._tree.Tree"],
+        )
 
         print("Max Depth:", depth)
         print("Accuracy:", accuracy)
