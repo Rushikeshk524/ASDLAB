@@ -1,0 +1,58 @@
+ASD PRACTICAL – EXPERIMENT 5
+GIT BRANCHING AND MERGING
+
+AIM
+To create and work with branches in Git, make changes in a separate branch, and merge those changes into the main branch.
+
+THEORY
+A branch is an independent line of development that points to a particular commit. Developers can create a new branch to test an idea, develop a feature, or fix a bug while keeping the main branch stable.
+The main branch is generally used to store the primary version of a project. A feature branch can be created whenever a new feature or modification is required. 
+The git branch command is used to view or create branches. The git switch command is used to move from one branch to another. After switching to a feature branch, files can be edited, staged, and committed normally. These commits belong to the branch on which the changes were made.
+Merging is the process of combining the changes from one branch into another branch. To merge a feature branch into the main branch, the user first switches to the main branch and then executes git merge followed by the feature branch name. Git combines the changes and creates a merge commit when necessary. If the same part of a file has been changed differently in both branches, a merge conflict may occur. The user must then edit the file to resolve the conflict, stage the resolved file, and complete the merge.
+Branching and merging help organize development, support parallel work, and make project changes easier to manage.
+
+RESULT
+A feature branch was created successfully. Changes were made and committed in the feature branch, and the branch was merged into the main branch.
+
+CONCLUSION
+Thus, Git branching and merging were performed successfully. The experiment demonstrated how separate branches can be used to develop changes independently and combine them into the main project.
+
+PROCEDURE / COMMANDS
+1. Create a folder and initialize Git:
+   mkdir Exp5
+   cd Exp5
+   git init
+
+2. Create a file and make the first commit:
+   echo "Main branch content" > file.txt
+   git add .
+   git commit -m "Initial commit"
+
+3. Create a feature branch:
+   git branch feature
+
+4. Switch to the feature branch:
+   git switch feature
+
+5. Add a change in the feature branch:
+   echo "Feature branch content" >> file.txt
+
+6. Stage and commit the change:
+   git add .
+   git commit -m "Added feature"
+
+7. Switch back to the main branch:
+   git switch main
+
+   If your repository uses the branch name master, use:
+   git switch master
+
+8. Merge the feature branch into the current branch:
+   git merge feature
+
+9. Display the merged file:
+   type file.txt
+
+10. View the branch and commit history:
+    git log --oneline --all --graph
+

@@ -1,0 +1,55 @@
+ASD PRACTICAL – EXPERIMENT 4
+BASIC GIT OPERATIONS
+
+AIM
+To perform basic Git operations such as initializing a repository, configuring user details, creating and modifying files, staging changes, committing changes, and checking the repository history.
+
+THEORY
+Git is a distributed version control system used to track changes made to files in a project.  The command git init initializes a new repository in the current folder by creating a hidden .git directory. This directory contains the information required by Git to track the project.
+The git status command displays the current state of the working directory and staging area. It shows files that are untracked, modified, or staged for commit.
+The repository stores committed versions of the project. The git add command moves selected changes to the staging area, while git commit saves the staged changes permanently in the repository history with a message.
+The git diff command displays the differences between file versions. The git log command displays the commit history, including commit IDs, authors, dates, and commit messages. These commands help developers monitor and manage changes in a project.
+
+RESULT
+A Git repository was successfully initialized. User details were configured, a file was created and modified, and the changes were staged and committed. The status, difference, and commit history commands were also demonstrated.
+
+CONCLUSION
+Thus, the basic Git operations were performed successfully. The experiment demonstrated how Git tracks file changes and stores different versions of a project through commits.
+
+PROCEDURE / COMMANDS
+1. Create a folder and open it in the terminal:
+   mkdir Exp4
+   cd Exp4
+
+2. Initialize a Git repository:
+   git init
+
+3. Configure the username and email:
+   git config user.name "Your Name"
+   git config user.email "your@email.com"
+
+4. Create a text file:
+   echo "This is my first Git experiment" > file.txt
+
+5. Check the repository status:
+   git status
+
+6. Add the file to the staging area:
+   git add file.txt
+
+7. Commit the staged file:
+   git commit -m "First commit"
+
+8. Modify the file:
+   echo "Learning Git commands" >> file.txt
+
+9. View the changes:
+   git diff
+
+10. Stage and commit the modified file:
+    git add file.txt
+    git commit -m "Updated file"
+
+11. Display the commit history:
+    git log
+
