@@ -1,65 +1,464 @@
-ASD PRACTICAL – EXPERIMENT 6
-GITHUB REMOTE OPERATIONS
+ASD PRACTICAL – EXPERIMENT 3
+DOCKER: CREATE A DOCKERFILE, BUILD AN IMAGE, RUN A CONTAINER, AND TEST THE WEB APPLICATION
 
 AIM
-To perform GitHub remote repository operations such as cloning a repository, connecting a local repository to a remote repository, pushing local changes, and retrieving changes using fetch and pull.
+To create a Dockerfile for a sample web application, build a Docker image, run the application inside a Docker container, and test the application using a web browser.
 
-THEORY
-GitHub is an online platform used to host Git repositories. It allows developers to store project code remotely, collaborate with other developers, and maintain a shared version history. Git is the version control system, while GitHub provides remote hosting and collaboration features.
+WHAT YOU WILL DO
+1. Check the Windows 11 system requirements.
+2. Install and start Docker Desktop.
+3. Verify that Docker is working.
+4. Create a simple Python web application.
+5. Create a Dockerfile.
+6. Build a Docker image.
+7. Run a container from the image.
+8. Open the application in a browser.
+9. Stop and remove the container after the practical.
 
-A local repository is stored on the user's computer. A remote repository is stored on a hosting service such as GitHub. Connecting a local repository to a remote repository allows changes to be shared between the computer and the online project.
+PART A – PREPARE A NEW WINDOWS 11 PC
 
-The git clone command creates a local copy of an existing remote repository. It downloads the repository files and commit history and automatically configures the remote connection, usually with the name origin. The git remote -v command displays the remote repository URLs configured for the local repository.
+STEP 1: Check whether Docker is already installed
+1. Start Windows 11.
+2. Open the Start menu and search for PowerShell.
+3. Open PowerShell.
+4. Run:
 
-The git add command stages file changes, and git commit records those changes in the local repository. The git push command uploads local commits to the remote repository. For example, git push origin main sends the commits from the local main branch to the main branch on the remote named origin.
+   docker --version
 
-The git fetch command downloads new commits and references from the remote repository but does not automatically combine those changes with the current local branch. It is useful when a developer wants to inspect remote updates before integrating them. The git pull command downloads remote changes and integrates them into the current local branch. In normal use, pull performs a fetch followed by a merge, unless configured to rebase.
+5. If Docker displays a version, the Docker CLI is installed.
+6. Now check whether the Docker engine is running:
 
-These operations help keep local and remote repositories synchronized. They are commonly used in collaborative software development so that team members can share code and receive updates.
+   docker info
 
-PROCEDURE / COMMANDS
-1. Create a new empty repository on GitHub. Give it the name Exp6 and copy its HTTPS URL.
+7. If this displays server information, Docker is likely running.
+8. If the command is not recognized, install Docker Desktop by following Step 2.
+9. If the command is recognized but reports that it cannot connect to the Docker daemon, open Docker Desktop and wait for it to finish starting.
 
-2. Clone the remote repository:
-   git clone https://github.com/USERNAME/Exp6.git
+STEP 2: Check WSL 2 support
+Docker Desktop on Windows commonly uses the WSL 2 backend.
+1. Open PowerShell as Administrator:
+   - Open Start.
+   - Search for PowerShell.
+   - Right-click Windows PowerShell or Terminal.
+   - Select Run as administrator.
+2. Run:
 
-3. Open the cloned folder:
-   cd Exp6
+   wsl --status
 
-4. Check the configured remote:
-   git remote -v
+3. If WSL is installed and configured, Windows displays its status.
+4. If WSL is not installed, run:
 
-5. Configure your Git username and email if required:
-   git config user.name "Your Name"
-   git config user.email "your@email.com"
+   wsl --install
 
-6. Create a file:
-   echo "Learning GitHub remote operations" > file.txt
+5. Restart the computer if Windows asks you to.
+6. After restarting, open PowerShell and run:
 
-7. Stage and commit the file:
-   git add .
-   git commit -m "First commit"
+   wsl --status
 
-8. Push the local commit to GitHub:
-   git push origin main
+7. If Windows asks you to create a Linux username and password during first-time WSL setup, follow the prompts. This password is for the Linux environment and may not show characters while typing.
+8. If your college PC or Windows installation does not allow WSL installation, you may need administrator assistance.
 
-9. To demonstrate incoming remote changes, open the same repository on GitHub, edit or create a file, and commit the change on GitHub.
+STEP 3: Download Docker Desktop
+1. Open a browser.
+2. Visit the official Docker Desktop page:
 
-10. Fetch the remote changes:
-    git fetch origin
+   https://www.docker.com/products/docker-desktop/
 
-11. Integrate the remote changes into the current branch:
-    git pull origin main
+3. Download Docker Desktop for Windows.
+4. Open the downloaded installer.
+5. Follow the installation instructions.
+6. If the installer offers the WSL 2 backend option, keep the WSL 2 option selected for a typical modern Windows 11 PC.
+7. Complete the installation.
+8. Restart Windows if the installer requests it.
 
-12. Check the repository status:
-    git status
+STEP 4: Start Docker Desktop
+1. Open the Start menu.
+2. Search for Docker Desktop.
+3. Open Docker Desktop.
+4. If prompted to accept the terms, review and accept them.
+5. Wait until Docker Desktop reports that its engine is running. The first start may take a few minutes.
+6. If Docker Desktop asks you to install or update WSL, follow its instructions and restart if required.
+7. Do not run the practical commands until Docker Desktop has finished starting.
 
-NOTE
-Replace USERNAME with your GitHub username. If the default branch is named master instead of main, replace main with master in the relevant commands. If you created the local repository yourself instead of cloning it, connect it using the following command before pushing:
-   git remote add origin https://github.com/USERNAME/Exp6.git
+STEP 5: Verify Docker installation
+1. Open a new PowerShell window.
+2. Run:
+
+   docker --version
+
+3. Then run:
+
+   docker info
+
+4. Test Docker by running the official hello-world image:
+
+   docker run hello-world
+
+5. Docker may download the hello-world image the first time.
+6. If successful, the terminal displays a message beginning with "Hello from Docker!".
+7. This confirms that Docker can download an image and run a container.
+
+PART B – CREATE THE SAMPLE WEB APPLICATION
+
+For this practical, create a small Python Flask web application. Flask is a lightweight Python web framework. Docker will package the application and its dependencies into an image.
+
+STEP 6: Create a project folder
+1. Open PowerShell.
+2. Move to Documents:
+
+   cd $HOME\Documents
+
+3. Create a folder named DockerExp3:
+
+   mkdir DockerExp3
+
+4. Enter the folder:
+
+   cd DockerExp3
+
+5. Confirm your location:
+
+   pwd
+
+All the files for this experiment will be created inside this folder.
+
+STEP 7: Create the Python application file
+1. Open VS Code if it is installed.
+2. In VS Code, select File > Open Folder.
+3. Open Documents > DockerExp3.
+4. Create a new file named:
+
+   app.py
+
+5. Copy the following code into app.py:
+
+   from flask import Flask
+
+   app = Flask(__name__)
+
+   @app.route("/")
+   def home():
+       return "<h1>Hello from Docker!</h1><p>My first Docker web application is running.</p>"
+
+   if __name__ == "__main__":
+       app.run(host="0.0.0.0", port=5000)
+
+6. Save the file using Ctrl + S.
+7. IMPORTANT: The host must be 0.0.0.0, not 127.0.0.1. This allows the application to accept connections from outside the container through the published port.
+
+If VS Code is not installed, you can create the file using Notepad:
+- Open Notepad.
+- Paste the code.
+- Select File > Save As.
+- Browse to Documents\DockerExp3.
+- Enter app.py as the file name.
+- Set Save as type to All files.
+- Save it. Make sure the file is not accidentally named app.py.txt.
+
+STEP 8: Create the requirements file
+1. In the same DockerExp3 folder, create a file named:
+
+   requirements.txt
+
+2. Add this line:
+
+   Flask
+
+3. Save the file.
+4. This file tells Docker which Python package must be installed for the application.
+
+PART C – CREATE THE DOCKERFILE
+
+STEP 9: Create a Dockerfile
+1. In the same DockerExp3 folder, create a new file.
+2. Name it exactly:
+
+   Dockerfile
+
+3. Do not add an extension such as .txt.
+4. Enter the following instructions:
+
+   FROM python:3.11-slim
+   WORKDIR /app
+   COPY requirements.txt .
+   RUN pip install --no-cache-dir -r requirements.txt
+   COPY app.py .
+   EXPOSE 5000
+   CMD ["python", "app.py"]
+
+5. Save the file.
+
+STEP 10: Understand the Dockerfile instructions
+1. FROM python:3.11-slim
+   Selects a lightweight base image containing Python 3.11.
+
+2. WORKDIR /app
+   Sets /app as the working directory inside the image. Later commands run from this directory unless another directory is specified.
+
+3. COPY requirements.txt .
+   Copies the requirements file from the project folder on the PC into the image's working directory.
+
+4. RUN pip install --no-cache-dir -r requirements.txt
+   Installs Flask inside the image while it is being built.
+
+5. COPY app.py .
+   Copies the Python web application into the image.
+
+6. EXPOSE 5000
+   Documents that the application listens on port 5000 inside the container. This instruction alone does not publish the port to Windows.
+
+7. CMD ["python", "app.py"]
+   Specifies the command that runs when a container is started from this image.
+
+STEP 11: Verify that all three files exist
+The DockerExp3 folder must contain these files:
+
+   DockerExp3
+       app.py
+       requirements.txt
+       Dockerfile
+
+In PowerShell, run:
+
+   dir
+
+Check that all three files are displayed. If you see Dockerfile.txt or app.py.txt, rename the files so that their exact names are Dockerfile and app.py.
+
+PART D – BUILD THE DOCKER IMAGE
+
+STEP 12: Open the terminal in the project folder
+1. Open PowerShell.
+2. Enter the project folder:
+
+   cd $HOME\Documents\DockerExp3
+
+3. Check the files:
+
+   dir
+
+4. Make sure Docker Desktop is running before continuing.
+
+STEP 13: Build the image
+1. Run:
+
+   docker build -t exp3-webapp:1.0 .
+
+2. Understand the command:
+   - docker build tells Docker to build an image.
+   - -t gives the image a name and tag.
+   - exp3-webapp is the image name.
+   - 1.0 is the image tag/version.
+   - The final dot (.) means Docker should use the current folder as the build context. Do not forget it.
+
+3. Docker reads the Dockerfile and performs each instruction.
+4. It may download the Python base image and install Flask. The first build can take some time and requires an internet connection.
+5. Wait until the build finishes successfully.
+
+STEP 14: Verify the image
+1. Run:
+
+   docker images
+
+2. Find exp3-webapp in the list.
+3. Its tag should be 1.0.
+4. This confirms that the image has been created.
+
+PART E – RUN THE CONTAINER
+
+STEP 15: Start a container
+1. Run:
+
+   docker run -d --name exp3-container -p 5000:5000 exp3-webapp:1.0
+
+2. Understand the command:
+   - docker run creates and starts a container.
+   - -d runs it in the background.
+   - --name exp3-container gives the container a name.
+   - -p 5000:5000 maps Windows host port 5000 to container port 5000.
+   - exp3-webapp:1.0 is the image used to create the container.
+
+3. Docker should return a long container ID. This indicates that the container was created and started.
+
+STEP 16: Check whether the container is running
+1. Run:
+
+   docker ps
+
+2. Find exp3-container in the list.
+3. Check that its status says Up.
+4. Check the PORTS column. It should show a mapping similar to 0.0.0.0:5000->5000/tcp.
+
+STEP 17: Check the application logs if necessary
+1. Run:
+
+   docker logs exp3-container
+
+2. The output should show that Flask is running and listening on port 5000.
+3. If the container is not running, use the logs to identify the error.
+
+PART F – TEST THE WEB APPLICATION
+
+STEP 18: Open the application in a browser
+1. Open Chrome, Edge, or another browser.
+2. Enter this address:
+
+   http://localhost:5000
+
+3. Press Enter.
+4. You should see:
+
+   Hello from Docker!
+   My first Docker web application is running.
+
+5. This confirms that the Flask application is running inside the Docker container and that the port mapping allows the Windows browser to access it.
+
+STEP 19: Test using PowerShell (optional)
+You can also test the application from PowerShell:
+
+   curl.exe http://localhost:5000
+
+The response should contain the HTML text from app.py.
+
+PART G – STOP AND CLEAN UP AFTER THE PRACTICAL
+
+STEP 20: Stop the container
+1. After taking screenshots or showing the result to the examiner, run:
+
+   docker stop exp3-container
+
+2. This stops the running container but does not delete the image.
+
+STEP 21: Remove the container (optional)
+1. Run:
+
+   docker rm exp3-container
+
+2. This removes the stopped container.
+3. The image remains available and can be used to create another container.
+
+STEP 22: Confirm the status
+1. Run:
+
+   docker ps
+
+2. The stopped container should no longer appear in the running-container list.
+3. To view all containers, including stopped ones, run:
+
+   docker ps -a
+
+4. To view the image, run:
+
+   docker images
+
+COMMON ERRORS AND SOLUTIONS
+
+ERROR 1: 'docker' is not recognized
+Solution:
+- Install Docker Desktop.
+- Close and reopen PowerShell or VS Code.
+- Run docker --version again.
+- If it still fails, check that Docker Desktop was installed correctly and that its CLI is available in PATH.
+
+ERROR 2: Cannot connect to the Docker daemon
+Solution:
+- Open Docker Desktop.
+- Wait until its engine is running.
+- Reopen PowerShell and run docker info.
+- If Docker Desktop reports a WSL problem, follow its WSL update/install prompt and restart Windows if required.
+
+ERROR 3: WSL 2 is not installed or needs an update
+Solution:
+- Open PowerShell as Administrator.
+- Run:
+
+   wsl --install
+
+- Restart if requested.
+- If WSL is already installed but needs an update, run:
+
+   wsl --update
+
+- Open Docker Desktop again and wait for startup.
+
+ERROR 4: Docker build says it cannot find the Dockerfile
+Solution:
+- Run pwd and confirm that the terminal is inside Documents\DockerExp3.
+- Run dir and confirm that a file named Dockerfile exists.
+- Make sure it is not named Dockerfile.txt.
+- Run the build command again from the correct folder.
+
+ERROR 5: Docker build fails while downloading python:3.11-slim
+Solution:
+- Check that the PC has an active internet connection.
+- Retry the build command.
+- If the network is managed by a college or organization, its proxy or firewall may block Docker Hub.
+
+ERROR 6: Port is already allocated
+Solution:
+- Another application or container may already be using port 5000.
+- Check running containers:
+
+   docker ps
+
+- Stop an older container that is using port 5000, if it is safe to do so.
+- Alternatively, use a different Windows host port:
+
+   docker run -d --name exp3-container -p 5001:5000 exp3-webapp:1.0
+
+- Then open:
+
+   http://localhost:5001
+
+ERROR 7: The container name is already in use
+Solution:
+- A container with that name already exists.
+- Check all containers:
+
+   docker ps -a
+
+- If the old exp3-container is no longer needed, remove it:
+
+   docker rm -f exp3-container
+
+- Then run the docker run command again.
+
+ERROR 8: Browser says the site cannot be reached
+Solution:
+1. Check that the container is running:
+
+   docker ps
+
+2. Check its logs:
+
+   docker logs exp3-container
+
+3. Confirm that the port mapping includes 5000:5000.
+4. Confirm that app.py uses host="0.0.0.0".
+5. Try http://127.0.0.1:5000 instead of localhost.
+6. If you changed the application or Dockerfile after building the image, rebuild the image and recreate the container.
+
+ERROR 9: The container exits immediately
+Solution:
+- Check the error:
+
+   docker ps -a
+   docker logs exp3-container
+
+- Confirm that app.py and requirements.txt were copied into the image and that Flask was installed.
+- After correcting the files, rebuild the image and create a new container.
+
+IMPORTANT POINTS FOR THE PRACTICAL EXAM
+1. Docker Desktop must be running before Docker commands can use the Docker engine.
+2. The Dockerfile must be named exactly Dockerfile, with no .txt extension.
+3. The final dot in docker build -t exp3-webapp:1.0 . is compulsory because it specifies the current directory as the build context.
+4. EXPOSE 5000 documents the container port; -p 5000:5000 publishes it to the Windows host.
+5. The application must listen on 0.0.0.0 inside the container.
+6. An image is the packaged template. A container is a running instance created from an image.
+7. Building an image and running a container are two different steps.
+8. If you modify app.py or the Dockerfile, rebuild the image before creating a new container to test the updated version.
 
 RESULT
-The local repository was connected to a GitHub remote repository. The repository was cloned, local changes were committed and pushed, and remote changes were retrieved using fetch and pull.
+A Dockerfile was created for a sample Flask web application. The Docker image was built successfully, a container was started from the image, and the application was accessed and tested in a web browser through localhost.
 
 CONCLUSION
-Thus, GitHub remote operations were performed successfully. The experiment demonstrated how local and remote repositories communicate and how developers share and synchronize project changes using GitHub.
+Thus, the Docker experiment was performed successfully. The experiment demonstrated how Docker packages an application and its dependencies into an image and runs it in an isolated container that can be accessed through a published network port.
