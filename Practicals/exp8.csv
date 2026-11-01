@@ -1,0 +1,11 @@
+Income, Credit_Score, Loan_Amount, Status
+ 50000,          750,      200000, Approved
+ 20000,          500,      500000, Rejected
+ 80000,          800,      300000, Approved
+ 15000,          450,      600000, Rejected
+ 60000,          720,      250000, Approved
+ 25000,          550,      450000, Rejected
+ 90000,          820,      200000, Approved
+ 18000,          480,      550000, Rejected
+ 70000,          760,      300000, Approved
+100000,          850,      250000, Approved
