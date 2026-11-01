@@ -9,7 +9,7 @@
 # Step 0: check if pc has python and also download exp9.csv from repo
 # Step 1(run this in terminal): pip install pandas scikit-learn mlflow 
 # Step 2(run this in terminal): python exp9.py 
-# Step 3(run this in terminal): mlflow ui
+# Step 3(run this in terminal): python -m mlflow ui --backend-store-uri sqlite:///mlflow.db --host 127.0.0.1 --port 5000
 
 import pandas as pd
 import mlflow
