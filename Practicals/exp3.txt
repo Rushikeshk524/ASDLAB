@@ -1,0 +1,65 @@
+ASD PRACTICAL – EXPERIMENT 6
+GITHUB REMOTE OPERATIONS
+
+AIM
+To perform GitHub remote repository operations such as cloning a repository, connecting a local repository to a remote repository, pushing local changes, and retrieving changes using fetch and pull.
+
+THEORY
+GitHub is an online platform used to host Git repositories. It allows developers to store project code remotely, collaborate with other developers, and maintain a shared version history. Git is the version control system, while GitHub provides remote hosting and collaboration features.
+
+A local repository is stored on the user's computer. A remote repository is stored on a hosting service such as GitHub. Connecting a local repository to a remote repository allows changes to be shared between the computer and the online project.
+
+The git clone command creates a local copy of an existing remote repository. It downloads the repository files and commit history and automatically configures the remote connection, usually with the name origin. The git remote -v command displays the remote repository URLs configured for the local repository.
+
+The git add command stages file changes, and git commit records those changes in the local repository. The git push command uploads local commits to the remote repository. For example, git push origin main sends the commits from the local main branch to the main branch on the remote named origin.
+
+The git fetch command downloads new commits and references from the remote repository but does not automatically combine those changes with the current local branch. It is useful when a developer wants to inspect remote updates before integrating them. The git pull command downloads remote changes and integrates them into the current local branch. In normal use, pull performs a fetch followed by a merge, unless configured to rebase.
+
+These operations help keep local and remote repositories synchronized. They are commonly used in collaborative software development so that team members can share code and receive updates.
+
+PROCEDURE / COMMANDS
+1. Create a new empty repository on GitHub. Give it the name Exp6 and copy its HTTPS URL.
+
+2. Clone the remote repository:
+   git clone https://github.com/USERNAME/Exp6.git
+
+3. Open the cloned folder:
+   cd Exp6
+
+4. Check the configured remote:
+   git remote -v
+
+5. Configure your Git username and email if required:
+   git config user.name "Your Name"
+   git config user.email "your@email.com"
+
+6. Create a file:
+   echo "Learning GitHub remote operations" > file.txt
+
+7. Stage and commit the file:
+   git add .
+   git commit -m "First commit"
+
+8. Push the local commit to GitHub:
+   git push origin main
+
+9. To demonstrate incoming remote changes, open the same repository on GitHub, edit or create a file, and commit the change on GitHub.
+
+10. Fetch the remote changes:
+    git fetch origin
+
+11. Integrate the remote changes into the current branch:
+    git pull origin main
+
+12. Check the repository status:
+    git status
+
+NOTE
+Replace USERNAME with your GitHub username. If the default branch is named master instead of main, replace main with master in the relevant commands. If you created the local repository yourself instead of cloning it, connect it using the following command before pushing:
+   git remote add origin https://github.com/USERNAME/Exp6.git
+
+RESULT
+The local repository was connected to a GitHub remote repository. The repository was cloned, local changes were committed and pushed, and remote changes were retrieved using fetch and pull.
+
+CONCLUSION
+Thus, GitHub remote operations were performed successfully. The experiment demonstrated how local and remote repositories communicate and how developers share and synchronize project changes using GitHub.
