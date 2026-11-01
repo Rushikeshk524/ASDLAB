@@ -1,4 +1,4 @@
-#Question / Aim: 
+#Question / Aim: Develop a machine learning classification model to predict whether an employee will Stay or Leave the organization based on Years of Experience, Monthly Salary, and Job Satisfaction Score.
 
 #Theory: Machine learning is used to predict whether an employee will stay or leave an organization based on Years of Experience, Monthly Salary and Job Satisfaction Score. The dataset is divided into training and testing sets. A Decision Tree Classifier is trained using the training data. The model predicts employee attrition and its accuracy is calculated. MLflow is used to track model parameters, accuracy and trained models by changing the max_depth value.
 
